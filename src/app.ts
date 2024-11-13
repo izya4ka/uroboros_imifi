@@ -1,9 +1,7 @@
 import { MongoClient } from "mongodb";
 import TelegramBot from "node-telegram-bot-api";
-import { addUser } from "./database/addUser";
+import { handleUser } from "./bot/handleUser"
 require("dotenv").config();
-
-const track_refresh_interval = process.env.TRACK_REFRESH_INTERVAL;
 
 const db = {
   url: process.env.MONGODB_URL,
@@ -21,7 +19,18 @@ const bot = new TelegramBot(token, { polling: true });
 const send_opts = {
   reply_markup: {
     inline_keyboard: [
-      [{ text: "Редактировать треки", web_app: { url: web_app_url } }],
+      [
+        {
+          text: 'Показать очередь',
+          callback_data: 'show_queue'
+        }
+      ],
+      [
+        {
+          text: 'Вернуться в очередь',
+          callback_data: 'back_in_queue'
+        }
+      ]
     ],
   },
 };
@@ -39,10 +48,9 @@ db_client.connect().then((db_con) => {
       await bot.sendMessage(msg.chat.id, "Выберите опцию", send_opts)
   );
 
-//   bot.onText(/^\/start$/, async (msg) => {
-//     handleUser(msg, db_con, bot, send_opts);
-//   });
-
+  bot.onText(/^\/start$/, async (msg) => {
+    handleUser(msg, bot, db_con);
+  });
 
   setInterval(() => {
   }, 60000);
