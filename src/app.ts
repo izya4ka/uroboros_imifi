@@ -10,15 +10,12 @@ const db = {
   password: process.env.MONGODB_PASSWORD,
 };
 
-const web_app_url = process.env.WEB_APP_URL || "";
-
 const token = process.env.TELEGRAM_TOKEN || "";
 const bot = new TelegramBot(token, { polling: true });
 
-
 const send_opts = {
   reply_markup: {
-    inline_keyboard: [
+    keyboard: [
       [
         {
           text: 'Показать очередь',
@@ -49,7 +46,7 @@ db_client.connect().then((db_con) => {
   );
 
   bot.onText(/^\/start$/, async (msg) => {
-    handleUser(msg, bot, db_con);
+    handleUser(msg, bot, db_con, send_opts);
   });
 
   setInterval(() => {

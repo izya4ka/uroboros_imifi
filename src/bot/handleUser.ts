@@ -6,10 +6,15 @@ export const handleUser = async (
     msg:TelegramBot.Message,
     bot:TelegramBot,
     client: MongoClient,
-    sendOpts:TelegramBot.SendMessageOptions
+    sendOpts: TelegramBot.SendMessageOptions
 ) => {
     let userId = msg.from?.id;
     if (userId === undefined) return;
-    await addUser (client,  userId, msg.chat.id, "users");
-    await bot.sendMessage(msg.chat.id, "Вы записаны в очередь!", sendOpts);
+    try {
+        await addUser (client,  userId, msg.chat.id, "users");
+        console.log("Added user with ID: " + userId);
+        await bot.sendMessage(msg.chat.id, "Вы записаны в очередь!", sendOpts);
+      } catch (err) {
+        console.log(err);
+      }
 }
