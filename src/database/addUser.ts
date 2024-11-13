@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { MongoClient } from "mongodb";
 import { User } from "../models/User";
 
@@ -9,7 +8,6 @@ export const addUser = async (
 ) => {
     const db = client.db();
     const users = db.collection("users");
-    const user_found = await users.findOne<User>({ id });
-    const user: User = { id, want_to_back: false };
+    const user: User = { id, want_to_back: false, chat_id };
     await users.insertOne(user);
 }
