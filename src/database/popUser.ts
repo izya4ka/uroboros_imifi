@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { MongoClient } from "mongodb";
 import { User } from "../models/User";
 
