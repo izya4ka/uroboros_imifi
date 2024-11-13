@@ -10,6 +10,6 @@ export const addUser = async (
     const db = client.db();
     const users = db.collection("users");
     const user_found = await users.findOne<User>({ id });
-    const user: User = { id, key: randomUUID(), added: new Date(), chat_id };
+    const user: User = { id, want_to_back: false };
     await users.insertOne(user);
 }
