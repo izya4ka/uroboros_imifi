@@ -49,7 +49,7 @@ db_client.connect().then((db_con) => {
   );
 
   bot.onText(/^\/start$/, async (msg) => {
-    handleUser(msg, bot, db_con);
+    handleUser(msg, bot, db_con, send_opts);
   });
 
   setInterval(() => {
