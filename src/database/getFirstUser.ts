@@ -1,15 +1,12 @@
 import { MongoClient } from "mongodb";
 import { User } from "../models/User";
 
-export const popUser = async (
+// get first user from "users" collection
+export const getFirstUser  = async (
     client: MongoClient,
-    id: number,
-    chat_id: number,
-    collection: string
 ): Promise<User | null> => {
     const db = client.db();
-    const users = db.collection(collection);
+    const users = db.collection("users");
     const first_user = users.findOne<User>({});
-    users.deleteOne({})
-    return first_user
+    return first_user;
 }
