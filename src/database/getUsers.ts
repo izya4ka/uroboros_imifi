@@ -7,7 +7,7 @@ import { User } from "../models/User";
  * @returns {Promise<User[]>} - Returns all users from "users" collection
  */
 
-const getUsers = async (client: MongoClient): Promise<User[]> => {
+export const getUsers = async (client: MongoClient): Promise<User[]> => {
     let db = client.db();
     let users = db.collection("users");
     return users.find<User>({}).toArray();

@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 import TelegramBot from "node-telegram-bot-api";
 import { handleUser } from "./bot/handleUser"
+import { showQueue } from "./bot/showQueue";
 require("dotenv").config();
 
 const db = {
@@ -9,6 +10,26 @@ const db = {
   user: process.env.MONGODB_USER,
   password: process.env.MONGODB_PASSWORD,
 };
+
+const lessons =
+  [
+    {
+      name: "Дискретная математика",
+      days: [{
+        day: "Вторник",
+        time: "12:00",
+        duration: 6300
+      }],
+    },
+    {
+      name: "Дифференциальные уравнения",
+      days: [{
+        day: "Пятница",
+        time: "14:10",
+        duration: 6300,
+      }]
+    }
+  ]
 
 const token = process.env.TELEGRAM_TOKEN || "";
 const bot = new TelegramBot(token, { polling: true });
@@ -43,17 +64,22 @@ db_client.connect().then((db_con) => {
     handleUser(msg, bot, db_con, send_opts);
   });
 
-  // TODO Сделать обработку кнопок с клавиатуры выше. Т.е. вернуться в очередь, показать очередь
-  
+
+  bot.onText(/^Показать очередь$/m, async (msg) => {
+    showQueue(msg, db_con, bot);
+  })
+
   /*
-   * Что-то типа bot.onText("Показать очередь", (msg) => { пам-пам-парам-пам })
-   * И что-то типа bot.onText("Вернуться в очередь", (msg) => { пам-пам-парам-пам })
+   * что-то типа bot.onText("Вернуться в очередь", (msg) => { пам-пам-парам-пам })
    * 
-   * В первом случае, при нажатии на кнопку "Показать очередь" просто вызываешь getUsers и отправляешь соообщение
-   * Во втором случае, при нажатии на кнопку "Вернуться в очередь" придётся падумать о том, как это реализовать,
+   * при нажатии на кнопку "Вернуться в очередь" придётся падумать о том, как это реализовать,
    * ибо нельзя вернуться, пока другой человек отвечает, ну кароче в главном круге уробороса реализуем чонить
    */
 
   // TODO Реализовать бесконечный круг во время пары
+
+  setInterval(() => {
+
+  }, 60000); // Every minute check for lessson started
 
 });
