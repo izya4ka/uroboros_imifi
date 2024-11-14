@@ -1,7 +1,12 @@
 import { MongoClient } from "mongodb";
 import { User } from "../models/User";
 
-// get first user from "users" collection
+/**
+ * Get first user from "users" collection
+ * @param client - MongoClient instance
+ * @returns {Promise<User | null>} - Returns the first user from "users" collection or null if no user is found
+ */
+
 export const getFirstUser  = async (
     client: MongoClient,
 ): Promise<User | null> => {
